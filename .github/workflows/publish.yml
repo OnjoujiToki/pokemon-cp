@@ -2,7 +2,7 @@ name: Deploy to Hostinger
 
 on:
   push:
-    branches: [build] # Changed from main to build
+    branches: [ build ]
 
 jobs:
   deploy:
@@ -18,7 +18,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: Create .env.local
         run: |
@@ -37,12 +37,12 @@ jobs:
         uses: easingthemes/ssh-deploy@main
         with:
           SSH_PRIVATE_KEY: ${{ secrets.HOSTINGER_SSH_KEY }}
-          ARGS: '-rlgoDzvc -i --delete'
-          SOURCE: '.next/'
+          ARGS: "-rlgoDzvc -i --delete"
+          SOURCE: ".next/"
           REMOTE_HOST: ${{ secrets.HOSTINGER_HOST }}
           REMOTE_USER: ${{ secrets.HOSTINGER_USERNAME }}
           TARGET: ${{ secrets.HOSTINGER_TARGET_DIR }}
-          EXCLUDE: '/node_modules/, /.git/, /.github/, .env.local'
+          EXCLUDE: "/node_modules/, /.git/, /.github/, .env.local"
 
       - name: Upload package.json and create env file
         uses: appleboy/ssh-action@master
@@ -62,6 +62,6 @@ jobs:
             echo "NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}" >> .env.local
             # Set proper permissions
             chmod 600 .env.local
-            # Install dependencies and restart
-            npm install --production
+            # Install dependencies with legacy peer deps
+            npm install --legacy-peer-deps --production
             pm2 restart pokemon-cp-platform || pm2 start npm --name "pokemon-cp-platform" -- start
