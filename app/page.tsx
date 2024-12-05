@@ -4,6 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Code2, Trophy, Gamepad2, BookOpen, Target, Users } from "lucide-react";
 import Link from 'next/link';
+import Head from "next/head";
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Pokémon CP Platform - Learn Programming with Pokémon',
+  description: 'Solve competitive programming challenges and catch Pokémon',
+}
 
 export default function Home() {
   const features = [
@@ -43,6 +50,7 @@ export default function Home() {
   ];
 
   return (
+    
     <main className="container mx-auto px-4 py-16 space-y-16">
       {/* Hero Section */}
       <div className="text-center space-y-6">
